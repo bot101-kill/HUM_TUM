@@ -130,62 +130,42 @@ def submit():
   <meta charset="UTF-8">
   <title>Prom Night Invitation</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #ffffff; font-family: 'Segoe UI', sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #ffffff; min-height: 100vh; padding: 40px 0;">
+<body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td align="center">
-        <!-- Inner box with updated gradient background (blue-green style) -->
-        <table width="600" cellpadding="20" cellspacing="0" style="background: linear-gradient(to bottom right, #00c9a7, #0052d4); border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+        <table width="600" border="0" cellspacing="0" cellpadding="20" style="background-color: #ffffff; border-radius: 8px; border: 1px solid #ddd;">
           <tr>
-            <td align="center" style="padding-top: 30px;">
-              <!-- Heart SVG -->
-              <svg width="60" height="60" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
-                         2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 
-                         4.5 2.09C13.09 3.81 14.76 3 16.5 3 
-                         19.58 3 22 5.42 22 8.5c0 3.78-3.4 
-                         6.86-8.55 11.54L12 21.35z"/>
-              </svg>
-              <h1 style="color: #ffffff; font-size: 28px; margin-top: 10px;">You're Invited to PROM NIGHT 💃🕺</h1>
+            <td align="center" style="padding: 20px 0;">
+              <h1 style="font-size: 24px; margin: 0;">You have a secret Prom invitation! 💌</h1>
             </td>
           </tr>
           <tr>
-            <td style="color: #fff; font-size: 16px; line-height: 1.6; text-align: center;">
-              <p>Hi dear,</p>
-              <p>Someone special has invited you to the most magical night of the year... <strong style="color: #ffe6f9;">PROM NIGHT</strong>!</p>
-              <p>Can you guess who it is from the options?</p>
-              <p>It’s a mystery worth solving—and don’t worry, it’s completely safe to check 💌</p>
+            <td align="center" style="font-size: 16px; line-height: 1.5;">
+              <p>Hi there,</p>
+              <p>Someone you know from IIT Mandi would like you to be their date for Prom Night.</p>
+              <p>Click the button below to see your options and guess who it is!</p>
             </td>
           </tr>
           <tr>
-            <td align="center">
-              <a href="{viewer_link}" style="background-color:#157347; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; font-size: 16px; display: inline-block;">
-                Reveal the Secret 💘
+            <td align="center" style="padding: 20px 0;">
+              <a href="{viewer_link}" style="background-color: #28a745; color: #ffffff; text-decoration: none; padding: 15px 30px; border-radius: 5px; font-weight: bold; font-size: 16px;">
+                Reveal Your Invitation
               </a>
             </td>
           </tr>
           <tr>
-            <td align="center">
-              <a href="{disable_Link}" style="background-color:black; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; font-size: 16px; display: inline-block;">
-                Don't want to go? Click here to disable your email.
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td style="text-align: center; font-size: 14px; color: #fbe6f9;">
-              <p style="margin-top: 30px;">This night might just change everything 💫</p>
-              <p>See you on the dance floor 💃🕺</p>
+            <td align="center" style="padding-top: 20px; font-size: 12px; color: #777;">
+              <p>This email was sent because a user invited you via the Prom Night App.</p>
+              <p>Not interested? You can <a href="{disable_Link}" style="color: #777;">unsubscribe here</a>.</p>
             </td>
           </tr>
         </table>
-        <p style="font-size: 12px; color: #999; padding-top: 20px;">Sent with 💗 by PromNightBot</p>
       </td>
     </tr>
   </table>
 </body>
 </html>
-
-
 """
 
     # Send the main invitation email
