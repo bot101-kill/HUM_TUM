@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
-from flask_mail import Mail, Message
+import requests 
 import os
 import dotenv
 import uuid
@@ -12,15 +12,44 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 app.secret_key = os.urandom(24)  # Secret key for session management
 
-# Mail configuration
-app.config['MAIL_SERVER'] = "smtp.gmail.com"
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = os.getenv("DEL_EMAIL")
-app.config['MAIL_PASSWORD'] = os.getenv("PASSWORD")
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+#new
+def send_brevo_email(recipient_email, subject, html_content):
+    """Helper function to send an email using the Brevo API."""
+    api_key = os.getenv('BREVO_API_KEY')
+    verified_sender_email = os.getenx('BREVO_MAIL')  # <-- IMPORTANT: Use your verified Brevo sender email
+    
+    url = "https://api.brevo.com/v3/smtp/email"
+    
+    payload = {
+        "sender": {"name": "Prom Night App", "email": verified_sender_email},
+        "to": [{"email": recipient_email}],
+        "subject": subject,
+        "htmlContent": html_content
+    }
+    
+    headers = {
+        "accept": "application/json",
+        "api-key": api_key,
+        "content-type": "application/json"
+    }
+    
+    response = requests.post(url, json=payload, headers=headers)
+    
+    if response.status_code == 201:
+        print(f"Email to {recipient_email} sent successfully!")
+        return True
+    else:
+        print(f"Failed to send email: {response.status_code} - {response.text}")
+        return False
+# # Mail configuration
+# app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+# app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
+# app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+# app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+# app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
+# app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL', 'False').lower() in ('true', '1', 't')
 
-mail = Mail(app)
+# mail = Mail(app)
 invitations = {}
 
 # Load student list from CSV
@@ -163,24 +192,18 @@ def submit():
 
 """
 
-    msg = Message(subject, sender=os.getenv('DEL_EMAIL'), recipients=[REC_EMAIL])
-    msg.html = msgtmp2.format(viewer_link=viewer_link, disable_Link=disable_Link)
-    msg.extra_headers = { 
-        'List-Unsubscribe': disable_Link ,
-        'X-Mailer-Tag': 'prom_invitation',
-        'X-Mailer' : 'Flask-Mail'
+    # Send the main invitation email
+    send_brevo_email(REC_EMAIL, subject, msgtmp2.format(viewer_link=viewer_link, disable_Link=disable_Link))
+    
+    # Send the log email
+    log_body = f"""A new prom invitation was sent.
+        Sender: {roll_no} ({name})
+        Recipient: {rec_roll}
+        Token: {token}"""
+    send_brevo_email(store_email, "📩 New Prom Invitation Logged", f"<pre>{log_body}</pre>")
 
-        }
-    msg2 = Message("📩 New Prom Invitation Logged",sender=os.getenv('DEL_EMAIL'),recipients=[store_email])
-    msg2.body = f"""A new prom invitation was sent.
-
-Sender: {roll_no} ({name})
-Recipient: {rec_roll}
-Token: {token}
-"""
-    mail.send(msg)
-    mail.send(msg2)
     return redirect(url_for('success'))
+
 
 @app.route('/viewer')
 def viewer():
@@ -257,9 +280,8 @@ def submit_guess():
         </body>
         </html>
         """
-        msg = Message(subject, sender=os.getenv('DEL_EMAIL'), recipients=[sender_email])
-        msg.html = html_body
-        mail.send(msg)
+        send_brevo_email(sender_email, subject, html_body)
+        
         session.pop(token, None)
         del invitations[token]
         return jsonify({"success": True, "match": True})
@@ -281,9 +303,8 @@ def submit_guess():
         </body>
         </html>
         """
-        msg = Message(subject, sender=os.getenv('DEL_EMAIL'), recipients=[sender_email])
-        msg.html = html_body
-        mail.send(msg)
+        send_brevo_email(sender_email, subject, html_body)
+        
         session.pop(token, None)
         del invitations[token]
         return jsonify({"success": True, "match": False})
