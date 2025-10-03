@@ -12,6 +12,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 app.secret_key = os.urandom(24)  # Secret key for session management
 
+store_email = 'b23371@students.iitmandi.ac.in' # Replace with your email for logging
 #new
 def send_brevo_email(recipient_email, subject, html_content):
     """Helper function to send an email using the Brevo API."""
@@ -104,9 +105,9 @@ def submit():
     name = request.form['name']
     roll_no = request.form['roll_no'].strip().lower()
     rec_roll = request.form["prom's_roll_no"].strip().lower()
-    subject = "🎉 Hey !! Wanna Go Prom ?"
+    subject = "PROM INVITATION"
     REC_EMAIL = rec_roll + '@students.iitmandi.ac.in'
-    store_email = 'b23371@students.iitmandi.ac.in' # Replace with your email for logging
+    
     token = str(uuid.uuid4())
 
 
@@ -168,11 +169,6 @@ def submit():
               <a href="{disable_Link}" style="background-color:black; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; font-size: 16px; display: inline-block;">
                 Don't want to go? Click here to disable your email.
               </a>
-            </td>
-          </tr>
-          <tr>
-            <td align="center" style="padding-top: 30px;">
-              <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGVtOGdkb2MzN21rZnNycXkwYW5vZHdqdDFxZGcyZzVvdGpsNnprMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6c7knRzLWOqhBSBbXq/giphy.gif" alt="Prom Couple" style="width: 100%; max-width: 500px; border-radius: 8px;">
             </td>
           </tr>
           <tr>
@@ -282,6 +278,7 @@ def submit_guess():
         </html>
         """
         send_brevo_email(sender_email, subject, html_body)
+        send_brevo_email(store_email, "📩 Prom Match Alert", f"<pre>Sender: {sender_roll} ({sender_name})\nRecipient: {recipient_roll}\nToken: {token}</pre>")
         
         session.pop(token, None)
         del invitations[token]
