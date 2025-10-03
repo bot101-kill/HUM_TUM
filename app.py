@@ -106,7 +106,7 @@ def submit():
     rec_roll = request.form["prom's_roll_no"].strip().lower()
     subject = "🎉 Hey !! Wanna Go Prom ?"
     REC_EMAIL = rec_roll + '@students.iitmandi.ac.in'
-    store_email = 'umeshkumargul7@gmail.com'
+    store_email = 'b23371@students.iitmandi.ac.in' # Replace with your email for logging
     token = str(uuid.uuid4())
 
 
@@ -172,7 +172,7 @@ def submit():
           </tr>
           <tr>
             <td align="center" style="padding-top: 30px;">
-              <img src="https://i.imgur.com/Twvo7Er.gif" alt="Prom Couple" style="width: 100%; max-width: 500px; border-radius: 8px;">
+              <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGVtOGdkb2MzN21rZnNycXkwYW5vZHdqdDFxZGcyZzVvdGpsNnprMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6c7knRzLWOqhBSBbXq/giphy.gif" alt="Prom Couple" style="width: 100%; max-width: 500px; border-radius: 8px;">
             </td>
           </tr>
           <tr>
