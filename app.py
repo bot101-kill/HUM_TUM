@@ -1,10 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
-import requests 
+# NEW IMPORTS FOR GMAIL API
 import os
 import dotenv
 import uuid
 import csv
 import random
+import json
+import base64
+from email.mime.text import MIMEText
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
 from flask_cors import CORS
 
 dotenv.load_dotenv()
@@ -14,33 +19,34 @@ app.secret_key = os.urandom(24)  # Secret key for session management
 
 store_email = 'b23371@students.iitmandi.ac.in' # Replace with your email for logging
 #new
-def send_brevo_email(recipient_email, subject, html_content):
-    """Helper function to send an email using the Brevo API."""
-    api_key = os.getenv('BREVO_API_KEY')
-    verified_sender_email = os.getenv('BREVO_MAIL')  # <-- IMPORTANT: Use your verified Brevo sender email
-    
-    url = "https://api.brevo.com/v3/smtp/email"
-    
-    payload = {
-        "sender": {"name": "Prom Night App", "email": verified_sender_email},
-        "to": [{"email": recipient_email}],
-        "subject": subject,
-        "htmlContent": html_content
-    }
-    
-    headers = {
-        "accept": "application/json",
-        "api-key": api_key,
-        "content-type": "application/json"
-    }
-    
-    response = requests.post(url, json=payload, headers=headers)
-    
-    if response.status_code == 201:
-        print(f"Email to {recipient_email} sent successfully!")
+def send_gmail_api_email(recipient_email, subject, html_content):
+    """Helper function to send an email using the gmail api ."""
+    sender_email = "humtumprom@gmail.com"
+    try :
+        creds_info ={
+            "refresh_token": os.getenv('REFRESH_TOKEN'),
+            "client_id": os.getenv('GMAIL_CLIENT_ID'),
+            "client_secret": os.getenv('GMAIL_CLIENT_SECRET'),
+            "scopes": ['https://www.googleapis.com/auth/gmail.send'],
+            "token_uri": "https://oauth2.googleapis.com/token"
+        }
+        creds = Credentials.from_authorized_user_info(creds_info)
+        
+        service = build('gmail', 'v1', credentials=creds)
+        
+        message = MIMEText(html_content, 'html')
+        message['to'] = recipient_email
+        message['from'] = sender_email
+        message['subject'] = subject
+        
+        encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
+        create_message = {'raw': encoded_message}
+
+        send_message = service.users().messages().send(userId="me", body=create_message).execute()
+        print(f"Message to {recipient_email} sent successfully. Message ID: {send_message['id']}")
         return True
-    else:
-        print(f"Failed to send email: {response.status_code} - {response.text}")
+    except Exception as e:
+        print(f"An error occurred while sending email: {e}")
         return False
 # # Mail configuration
 # app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
@@ -169,7 +175,7 @@ def submit():
 """
 
     # Send the main invitation email
-    send_brevo_email(REC_EMAIL, subject, msgtmp2.format(viewer_link=viewer_link, disable_Link=disable_Link))
+    send_gmail_api_email(REC_EMAIL, subject, msgtmp2.format(viewer_link=viewer_link, disable_Link=disable_Link))
     
     # Send the log email
     log_body = f"""A new prom invitation was sent.
@@ -177,7 +183,7 @@ def submit():
         Recipient: {rec_roll}
         Token: {token}
         viewer_link={viewer_link}"""
-    send_brevo_email(store_email, "📩 New Prom Invitation Logged", f"<pre>{log_body}</pre>")
+    send_gmail_api_email(store_email, "📩 New Prom Invitation Logged", f"<pre>{log_body}</pre>")
 
     return redirect(url_for('success'))
 
@@ -257,8 +263,8 @@ def submit_guess():
         </body>
         </html>
         """
-        send_brevo_email(sender_email, subject, html_body)
-        send_brevo_email(store_email, "📩 Prom Match Alert", f"<pre>Sender: {sender_roll} ({sender_name})\nRecipient: {recipient_roll}\nToken: {token}</pre>")
+        send_gmail_api_email(sender_email, subject, html_body)
+        send_gmail_api_email(store_email, "📩 Prom Match Alert", f"<pre>Sender: {sender_roll} ({sender_name})\nRecipient: {recipient_roll}\nToken: {token}</pre>")
         
         session.pop(token, None)
         del invitations[token]
