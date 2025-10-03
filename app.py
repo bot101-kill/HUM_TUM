@@ -13,12 +13,12 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 app.secret_key = os.urandom(24)  # Secret key for session management
 
 # Mail configuration
-app.config['MAIL_SERVER'] = "smtp.gmail.com"
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = os.getenv("DEL_EMAIL")
-app.config['MAIL_PASSWORD'] = os.getenv("PASSWORD")
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
+app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL', 'False').lower() in ('true', '1', 't')
 
 mail = Mail(app)
 invitations = {}
