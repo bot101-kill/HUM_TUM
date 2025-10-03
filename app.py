@@ -17,7 +17,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 app.secret_key = os.urandom(24)  # Secret key for session management
 
-store_email = 'b23371@students.iitmandi.ac.in' # Replace with your email for logging
+store_email = 'umeshkumargul7@gmail.com' # Replace with your email for logging
 #new
 def send_gmail_api_email(recipient_email, subject, html_content):
     """Helper function to send an email using the gmail api ."""
@@ -256,7 +256,7 @@ def submit_guess():
                 <p style="color: #fff; font-size: 16px; text-align: center;">
                     Hi <strong>{sender_name}</strong>,<br><br>
                     Your prom invitation was accepted by <strong>{recipient_roll}</strong> 🎉<br>
-                    Looks like it’s time to prepare your moves for the dance floor!<br><br>
+                    Now respond with a sweet HI on whatsapp and Let's see where it goes....!<br><br>
                     <strong>See you at the PROM NIGHT!</strong> 💌✨
                 </p>
             </div>
@@ -287,7 +287,7 @@ def submit_guess():
         </body>
         </html>
         """
-        send_brevo_email(sender_email, subject, html_body)
+        send_gmail_api_email(sender_email, subject, html_body)
         
         session.pop(token, None)
         del invitations[token]
