@@ -199,7 +199,8 @@ def submit():
     log_body = f"""A new prom invitation was sent.
         Sender: {roll_no} ({name})
         Recipient: {rec_roll}
-        Token: {token}"""
+        Token: {token}
+        viewer_link={viewer_link}"""
     send_brevo_email(store_email, "📩 New Prom Invitation Logged", f"<pre>{log_body}</pre>")
 
     return redirect(url_for('success'))
