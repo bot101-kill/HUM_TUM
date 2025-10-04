@@ -73,7 +73,7 @@ with open(STUDENT_LIST_PATH, newline='') as csvfile:
         row = {k.strip(): v.strip() for k, v in row.items()}
         students.append({
             'name': row['Name'].upper(),
-            'roll': row['Roll'].strip().lower(),
+            'roll': row['Roll No.'].strip().lower(),
             'gender': row.get('Gender', '').strip().lower()
         })
 
