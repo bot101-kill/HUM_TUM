@@ -21,7 +21,7 @@ store_email = 'umeshkumargul7@gmail.com' # Replace with your email for logging
 #new
 def send_gmail_api_email(recipient_email, subject, html_content):
     """Helper function to send an email using the gmail api ."""
-    sender_email = os.getenv('DEL_MAIL'),
+    sender_email = os.getenv('DEL_MAIL')
     try :
         creds_info ={
             "refresh_token": os.getenv('REFRESH_TOKEN'),
