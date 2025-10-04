@@ -21,12 +21,12 @@ store_email = 'umeshkumargul7@gmail.com' # Replace with your email for logging
 #new
 def send_gmail_api_email(recipient_email, subject, html_content):
     """Helper function to send an email using the gmail api ."""
-    sender_email = "humtumprom@gmail.com"
+    sender_email = os.getenv('DEL_MAIL'),
     try :
         creds_info ={
             "refresh_token": os.getenv('REFRESH_TOKEN'),
-            "client_id": os.getenv('GMAIL_CLIENT_ID'),
-            "client_secret": os.getenv('GMAIL_CLIENT_SECRET'),
+            "client_id": os.getenv('CLIENT_ID'),
+            "client_secret": os.getenv('CLIENT_SECRET'),
             "scopes": ['https://www.googleapis.com/auth/gmail.send'],
             "token_uri": "https://oauth2.googleapis.com/token"
         }
