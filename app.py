@@ -162,7 +162,9 @@ def submit():
           </tr>
           <tr>
             <td align="center" style="padding-top: 20px; font-size: 12px; color: #777;">
-              <p>This email was sent because a user invited you via the Prom Night App.</p>
+              <p>This email was sent because a user invited you via the Hum Tum Application.</p>
+              <p><a href="https://hum-tum-1-3wxj.onrender.com" style="color: #777;">Visit our website</a> for more info.</p>
+              <p style="font-size: 8px;">we are using b23379@students.iitmandi.ac.in by default to send email.</p>
               <p>Not interested? You can <a href="{disable_Link}" style="color: #777;">unsubscribe here</a>.</p>
             </td>
           </tr>
