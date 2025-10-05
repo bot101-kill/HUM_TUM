@@ -7,6 +7,10 @@ The project features user-friendly pages, form handling, and backend logic power
 It also demonstrates integration of static assets and templates for smooth navigation.
 
 ---
+## EDITING 
+Setup 2 clients on google cloud console 
+1. for OAUTH CALL during sign , set javascript orgin url as url of website
+2. for GMAIL API call , install gmail api on cloud console and setup on testing mode with test user as the mail id , then get client id and secret , use it to get refresh token from oauth 2.0 playground .
 
 ## 📂 Project Structure:
 
