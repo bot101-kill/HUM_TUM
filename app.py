@@ -17,7 +17,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 app.secret_key = os.urandom(24)  # Secret key for session management
 
-store_email = 'umeshkumargul7@gmail.com' # Replace with your email for logging
+store_email = 'logging_mail@gmail.com' # Replace with your email for logging
 #new
 def send_gmail_api_email(recipient_email, subject, html_content):
     """Helper function to send an email using the gmail api ."""
